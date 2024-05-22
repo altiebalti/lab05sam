@@ -35,36 +35,22 @@ public:
         vector<vector<int>> data;
     }
 
-    // Read matrix from a text file
-    bool readFromFile(const string& filename) {
-        ifstream file(filename);
-        if (!file.is_open()) {
-            cerr << "Error opening file " << filename << endl;
-            return false;
-        }
-        int rows;
-        file >> rows;
-        size = rows;
-        data.resize(rows);
-        string line;
-        getline(file, line);
-        for (int i = 0; i < rows; i++) {
-            data[i].resize(rows);
-            getline(file, line);
-            stringstream ss(line);
-            int value; 
-            int j = 0;
-            while (ss >> value) {
-               // cout << "VALUE: " << value << '\n';
-                data[i][j]= value;
-                j++;
-            }
-
-        }
-
-        file.close();
-        return true;
+    void setSize(int newsize) {
+        this->size = newsize;
     }
+
+    void readFromFile(ifstream& file) {
+        data.resize(size);
+        for (int i = 0; i < size; i++) {
+            data[i].resize(size);
+            for (int j = 0; j < size; j++) {
+                file >> data[i][j];
+            }
+        }
+    }
+
+    // Read matrix from a text file
+    
 
     // Print the matrix
     void print() {
@@ -75,6 +61,11 @@ public:
             }
             cout << '\n';
         }
+    }
+
+    void clear_data() {
+        data.clear();
+        data.shrink_to_fit();
     }
 
     vector<int> snake_right_left_triangle() {
